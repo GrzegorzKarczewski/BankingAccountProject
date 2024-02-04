@@ -74,22 +74,16 @@ fun main() {
 
  fun setupAccount(accountType: AccountType) : Account {
 
+     println("What's your first and lastname?")
+     val accountOwner = readln()
+     println("What's your initial deposit?")
+     val initialDeposit = readln().toDoubleOrNull()
      val account = Account(accountType)
-     account.createAccount(accountType, "Mister G,Karczewski", 515.0)
+     if (initialDeposit != null) {
+         account.createAccount(accountType, accountOwner, initialDeposit)
+     }
      println("You have created a ${account.accountType} account")
      println("The ${account.accountType} balance is ${account.checkBalance()} dollars")
-/*
-    }
-    if (account.accountType == AccountType.CREDIT) {
-        println("You have created a ${AccountType.CREDIT} account.")
-        println("The ${account.accountType} balance is ${account.checkBalance()} dollars")
-
-    }
-    if (account.accountType == AccountType. CHECKING) {
-        println("You have created a ${AccountType.CHECKING} account.")
-        println("The ${account.accountType} balance is ${account.checkBalance()} dollars")
-
-    }*/
      return account
 }
 
