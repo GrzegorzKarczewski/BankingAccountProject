@@ -1,7 +1,7 @@
 package org.example
 
 enum class AccountType {
-    DEBIT,CREDIT,CHECKING;  // Define account types
+    DEBIT, CREDIT, CHECKING;  // Define account types
 
     companion object {
         fun fromInt(value: Int) = when (value) {
@@ -12,79 +12,84 @@ enum class AccountType {
         }
     }
 }
+
 interface BankAccount {
-    fun createAccount(accountType: AccountType, accountName: String, initialDeposit:Double)
-    fun checkBalance():Double
-    fun withdraw(amount:Double): Boolean
-    fun deposit(amount:Double): Boolean
+    fun createAccount(accountType: AccountType, accountName: String, initialDeposit: Double)
+    fun checkBalance(): Double
+    fun withdraw(amount: Double): Boolean
+    fun deposit(amount: Double): Boolean
 }
 
- class Account(val accountType: AccountType) : BankAccount{
+class Account(val accountType: AccountType) : BankAccount {
 
-     private var currentBalance = 0.0
+    private var currentBalance = 0.0
     override fun createAccount(accountType: AccountType, accountName: String, initialDeposit: Double) {
         currentBalance = initialDeposit
-    return
+        return
     }
 
     override fun checkBalance(): Double {
 
-    return this.currentBalance
+        return this.currentBalance
     }
 
     override fun withdraw(amount: Double): Boolean {
 
         currentBalance -= amount
-    return true
+        return true
     }
 
     override fun deposit(amount: Double): Boolean {
         currentBalance += amount
-    return true
+        return true
     }
 
 
 }
 
-fun printSelectedOption( optionNumber:Int) {
+fun printSelectedOption(optionNumber: Int) {
     println("The selected option is $optionNumber")
 }
+
 // global vars
 var userOnline = true
 
 fun main() {
     // Making UI into function, for reuse later
-    printUI()
-    val input = readlnOrNull()?.toIntOrNull()  // Read and convert input to Int? once
-    when (input) {
+    var accountType: AccountType? = null
+    while(accountType == null) {
+     printUI()
+     val input = readlnOrNull()?.toIntOrNull()  // Read and convert input to Int? once
+     when (input) {
         null -> println("Wrong input")
-        in 1..3 -> printSelectedOption(input)
+        in 1..3 -> {
+            // Convert Int to AccountType
+            accountType = AccountType.fromInt(input ?: 0) ?: return  // Return or handle invalid input
+            printSelectedOption(input)
+             }
         else -> println("Account type doesn't exist")
+        }
     }
-
-// Convert Int to AccountType
-    val accountType = AccountType.fromInt(input ?: 0) ?: return  // Return or handle invalid input
-
 // Create account and process operations
     val account = setupAccount(accountType)
-   while (userOnline) {
-       accountOperations(account)
+    while (userOnline) {
+        accountOperations(account)
     }
 }
 
- fun setupAccount(accountType: AccountType) : Account {
+fun setupAccount(accountType: AccountType): Account {
 
-     println("What's your first and lastname?")
-     val accountOwner = readln()
-     println("What's your initial deposit?")
-     val initialDeposit = readln().toDoubleOrNull()
-     val account = Account(accountType)
-     if (initialDeposit != null) {
-         account.createAccount(accountType, accountOwner, initialDeposit)
-     }
-     println("You have created a ${account.accountType} account")
-     println("The ${account.accountType} balance is ${account.checkBalance()} dollars")
-     return account
+    println("What's your first and lastname?")
+    val accountOwner = readln()
+    println("What's your initial deposit?")
+    val initialDeposit = readln().toDoubleOrNull()
+    val account = Account(accountType)
+    if (initialDeposit != null) {
+        account.createAccount(accountType, accountOwner, initialDeposit)
+    }
+    println("You have created a ${account.accountType} account")
+    println("The ${account.accountType} balance is ${account.checkBalance()} dollars")
+    return account
 }
 
 fun printUI() {
@@ -114,7 +119,7 @@ fun accountOperations(account: Account) {
     }
 }
 
-fun deposit(account:Account) {
+fun deposit(account: Account) {
 
     println("How much would you like to deposit? :")
     val amountToDeposit = readlnOrNull()?.toDoubleOrNull() // Read and convert input to Int? once
@@ -125,10 +130,11 @@ fun deposit(account:Account) {
     }
     println("Account balance after deposit: ${account.checkBalance()}")
 }
-fun withdraw (account: Account) {
+
+fun withdraw(account: Account) {
     println("How much would you like to withdraw: ")
     val amountToWithdraw = readlnOrNull()?.toDoubleOrNull() // Read and convert input to Int? once
-    if (amountToWithdraw!= null) {
+    if (amountToWithdraw != null) {
         if (amountToWithdraw < account.checkBalance()) {
             account.withdraw(amountToWithdraw)
         } else {
