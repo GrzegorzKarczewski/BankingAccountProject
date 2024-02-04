@@ -64,7 +64,7 @@ fun main() {
         null -> println("Wrong input")
         in 1..3 -> {
             // Convert Int to AccountType
-            accountType = AccountType.fromInt(input ?: 0) ?: return  // Return or handle invalid input
+            accountType = AccountType.fromInt(input) ?: return  // Return or handle invalid input
             printSelectedOption(input)
              }
         else -> println("Account type doesn't exist")
