@@ -55,6 +55,7 @@ fun printSelectedOption(optionNumber: Int) {
 var userOnline = true
 
 fun main() {
+
     // Making UI into function, for reuse later
     var accountType: AccountType? = null
     while(accountType == null) {
@@ -138,7 +139,7 @@ fun withdraw(account: Account) {
         if (amountToWithdraw < account.checkBalance()) {
             account.withdraw(amountToWithdraw)
         } else {
-            println("The current balance is lower than the amount you want to withdraw")
+            println("Not enough money on this account! The checking balance is ${account.checkBalance()} dollars.")
         }
     }
     println("Account balance after withdraw: ${account.checkBalance()}")
